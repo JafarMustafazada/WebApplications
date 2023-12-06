@@ -5,7 +5,9 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManualMethods", "ManualMethods\ManualMethods.csproj", "{36E200B3-15C4-4676-9052-9772C192EFE5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVC_OneToMany", "MVC_OneToMany\MVC_OneToMany.csproj", "{640B97C0-5D7E-4621-A591-D9E8B98B5173}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{75A465AC-44C0-4D6F-B98B-007C9F35966F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVC_PustokPlus", "MVC_PustokPlus\MVC_PustokPlus.csproj", "{DBBF19A7-C83F-4C9B-82EB-C6CBE3FA689C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +19,10 @@ Global
 		{36E200B3-15C4-4676-9052-9772C192EFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36E200B3-15C4-4676-9052-9772C192EFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36E200B3-15C4-4676-9052-9772C192EFE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{640B97C0-5D7E-4621-A591-D9E8B98B5173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{640B97C0-5D7E-4621-A591-D9E8B98B5173}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{640B97C0-5D7E-4621-A591-D9E8B98B5173}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{640B97C0-5D7E-4621-A591-D9E8B98B5173}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBBF19A7-C83F-4C9B-82EB-C6CBE3FA689C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBBF19A7-C83F-4C9B-82EB-C6CBE3FA689C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBBF19A7-C83F-4C9B-82EB-C6CBE3FA689C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBBF19A7-C83F-4C9B-82EB-C6CBE3FA689C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
