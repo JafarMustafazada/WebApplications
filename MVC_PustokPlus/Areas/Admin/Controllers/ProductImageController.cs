@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using MVC_PustokPlus.Areas.Admin.ViewModels;
 using MVC_PustokPlus.Contexts;
+using MVC_PustokPlus.Helpers;
+using MVC_PustokPlus.Models;
 
 namespace MVC_PustokPlus.Areas.Admin.Controllers;
 
@@ -16,7 +21,11 @@ public class ProductImageController : Controller
     // GET: ProductImageController
     public ActionResult Index()
     {
-        return View();
+        return View(_db.Products.Select(p => new AdminProductImageListVM
+        {
+            ProductName = p.Name,
+            ImagePath = p.ProductImages.Select(pi => pi.ImagePath).ToList(),
+        }));
     }
 
     // GET: ProductImageController/Details/5
@@ -28,22 +37,47 @@ public class ProductImageController : Controller
     // GET: ProductImageController/Create
     public ActionResult Create()
     {
+        ViewBag.Products = new SelectList(_db.Products, "Id", "Name");
         return View();
     }
 
     // POST: ProductImageController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Create(IFormCollection collection)
+    public async Task<ActionResult> Create(AdminProductImageCreateVM vm)
     {
-        try
+        if (!ModelState.IsValid)
         {
-            return RedirectToAction(nameof(Index));
+            ViewBag.Categories = _db.Categories;
+            return View(vm);
         }
-        catch
+
+
+        ProductImages prodImg;
+        foreach (var item in vm.Images)
         {
-            return View();
+            if (item != null)
+            {
+                if (!item.IsCorrectType())
+                {
+                    ModelState.AddModelError("ImageFile", "Wrong file type");
+                }
+                if (!item.IsValidSize())
+                {
+                    ModelState.AddModelError("ImageFile", "Files length must be less than kb");
+                }
+
+                prodImg = new ProductImages()
+                {
+                    ProductId = vm.ProductId,
+                    ImagePath = item.SaveAsync("datas").Result
+                };
+                await _db.ProductImages.AddAsync(prodImg);
+            }
         }
+
+        await _db.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     // GET: ProductImageController/Edit/5

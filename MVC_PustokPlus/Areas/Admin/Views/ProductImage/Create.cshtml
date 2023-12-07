@@ -1,0 +1,44 @@
+﻿@model AdminProductImageCreateVM
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Create Product Image</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="ProductId">Product</label>
+                <select class="form-control" asp-for="ProductId" asp-items='@ViewBag.Products'>
+                    <option disabled selected>Select Product</option>
+                </select>
+                <span asp-validation-for="ProductId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Images"></label>
+                <input asp-for="Images" accept="image/*" class="form-control" multiple>
+                <span asp-validation-for="Images" class="text-danger"></span>
+            </div>
+@*             <div class="form-group">
+                <label asp-for="CategoryId">Categories</label>
+                <select class="form-control" asp-for="CategoryId" asp-items='@new SelectList(ViewBag.Categories, "Id" , "Name")'>
+                    <option disabled selected>Select category</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ColorIds">Colors</label>
+                <select class="form-control" asp-for="ColorIds" asp-items='@ViewBag.Colors'>
+                    <option disabled selected>Select Color</option>
+                </select>
+                <span asp-validation-for="ColorIds" class="text-danger"></span>
+            </div> *@
+            <button class="btn btn-success">Submit!</button>
+
+        </form>
+    </div>
+</div>
+
