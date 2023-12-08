@@ -20,7 +20,6 @@ public class ProductController : Controller
     // GET: ProductController
     public IActionResult Index()
     {
-
         return View(_db.Products.Select(p => new AdminProductVM
         {
             Id = p.Id,

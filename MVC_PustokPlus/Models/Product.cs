@@ -7,6 +7,7 @@ namespace MVC_PustokPlus.Models;
 public class Product
 {
     public int Id { get; set; }
+    public int CategoryId { get; set; }
 
     [MaxLength(64)]
     public string Name { get; set; }
@@ -21,8 +22,6 @@ public class Product
     public ushort Count { get; set; }
     public bool IsDeleted { get; set; } = false;
 
-    public int CategoryId { get; set; }
     public Category? Category { get; set; }
-
     public ICollection<ProductImages>? ProductImages { get; set; }
 }

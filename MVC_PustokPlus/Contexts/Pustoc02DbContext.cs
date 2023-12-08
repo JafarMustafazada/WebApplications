@@ -6,7 +6,6 @@ namespace MVC_PustokPlus.Contexts;
 
 public class Pustoc02DbContext : DbContext
 {
-
     public Pustoc02DbContext(DbContextOptions<Pustoc02DbContext> opt) : base(opt) { }
 
     public DbSet<Product> Products { get; set; }
@@ -14,4 +13,6 @@ public class Pustoc02DbContext : DbContext
     public DbSet<ProductImages> ProductImages { get; set; }
     public DbSet<Blog> Blogs { get; set; }
     public DbSet<Author> Authors { get; set; }
+    public DbSet<Tag> Tags { get; set; }
+    public DbSet<BlogTag> BlogTags { get; set; }
 }
