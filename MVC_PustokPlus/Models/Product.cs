@@ -21,7 +21,8 @@ public class Product
     public float Discount { get; set; }
     public ushort Count { get; set; }
     public bool IsDeleted { get; set; } = false;
+    public string FrontImagePath { get; set; }
 
     public Category? Category { get; set; }
-    public ICollection<ProductImages>? ProductImages { get; set; }
+    public ICollection<ProductImage>? ProductImages { get; set; }
 }

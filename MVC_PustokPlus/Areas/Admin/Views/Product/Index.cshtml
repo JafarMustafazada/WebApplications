@@ -22,6 +22,7 @@
                         <th>Discount</th>
                         <th>Quantity</th>
                         <th>Category</th>
+                        <th>Image</th>
                         <th colspan="2">Edit</th>
                     </tr>
                 </thead>
@@ -37,8 +38,8 @@
                                 <td>@item.CostPrice</td>
                                 <td>@item.Discount</td>
                                 <td>@item.Count</td>
-                                @* <td>@item.ImageUrl</td> *@
-                                <td>@item.Category?.Name</td>
+                                <td>@item.Category.Name</td>
+                                <td><img src="~/@item.FrontImagePath" style="height:150px;width:150px;"></td>
                                 <td class="text-center"><a class="btn btn-outline-info" asp-action="Update" asp-route-id="@item.Id">Update</a></td>
                                 <td class="text-center"><a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a></td>
                             </tr>

@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using MVC_PustokPlus.Areas.Admin.ViewModels;
 using MVC_PustokPlus.Contexts;
 using MVC_PustokPlus.Helpers;
@@ -21,10 +19,14 @@ public class ProductImageController : Controller
     // GET: ProductImageController
     public ActionResult Index()
     {
-        return View(_db.Products.Select(p => new AdminProductImageListVM
+        return View(_db.Products.Where(p2 => p2.IsDeleted == false).Select(p => new AdminProductImageListVM
         {
             ProductName = p.Name,
-            ImagePath = p.ProductImages.Select(pi => pi.ImagePath).ToList(),
+            CustomImages = p.ProductImages.Select(pi => new AdminProductImageListVM.CustomImage
+            {
+                Id = pi.Id,
+                ImagePath = pi.ImagePath,
+            }).ToList(),
         }));
     }
 
@@ -53,7 +55,7 @@ public class ProductImageController : Controller
         }
 
 
-        ProductImages prodImg;
+        ProductImage prodImg;
         foreach (var item in vm.Images)
         {
             if (item != null)
@@ -67,7 +69,7 @@ public class ProductImageController : Controller
                     ModelState.AddModelError("ImageFile", "Files length must be less than kb");
                 }
 
-                prodImg = new ProductImages()
+                prodImg = new ProductImage()
                 {
                     ProductId = vm.ProductId,
                     ImagePath = item.SaveAsync("datas").Result

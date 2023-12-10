@@ -22,20 +22,6 @@
                 <input asp-for="Images" accept="image/*" class="form-control" multiple>
                 <span asp-validation-for="Images" class="text-danger"></span>
             </div>
-@*             <div class="form-group">
-                <label asp-for="CategoryId">Categories</label>
-                <select class="form-control" asp-for="CategoryId" asp-items='@new SelectList(ViewBag.Categories, "Id" , "Name")'>
-                    <option disabled selected>Select category</option>
-                </select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ColorIds">Colors</label>
-                <select class="form-control" asp-for="ColorIds" asp-items='@ViewBag.Colors'>
-                    <option disabled selected>Select Color</option>
-                </select>
-                <span asp-validation-for="ColorIds" class="text-danger"></span>
-            </div> *@
             <button class="btn btn-success">Submit!</button>
 
         </form>

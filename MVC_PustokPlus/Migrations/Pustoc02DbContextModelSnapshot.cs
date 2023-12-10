@@ -51,7 +51,7 @@ namespace MVC_PustokPlus.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AuthorId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -73,6 +73,29 @@ namespace MVC_PustokPlus.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Blogs");
+                });
+
+            modelBuilder.Entity("MVC_PustokPlus.Models.BlogTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("BlogTags");
                 });
 
             modelBuilder.Entity("MVC_PustokPlus.Models.Category", b =>
@@ -126,6 +149,10 @@ namespace MVC_PustokPlus.Migrations
                     b.Property<float>("Discount")
                         .HasColumnType("real");
 
+                    b.Property<string>("FrontImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -144,7 +171,7 @@ namespace MVC_PustokPlus.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("MVC_PustokPlus.Models.ProductImages", b =>
+            modelBuilder.Entity("MVC_PustokPlus.Models.ProductImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -169,15 +196,49 @@ namespace MVC_PustokPlus.Migrations
                     b.ToTable("ProductImages");
                 });
 
+            modelBuilder.Entity("MVC_PustokPlus.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
             modelBuilder.Entity("MVC_PustokPlus.Models.Blog", b =>
                 {
                     b.HasOne("MVC_PustokPlus.Models.Author", "Author")
                         .WithMany("Blogs")
-                        .HasForeignKey("AuthorId")
+                        .HasForeignKey("AuthorId");
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("MVC_PustokPlus.Models.BlogTag", b =>
+                {
+                    b.HasOne("MVC_PustokPlus.Models.Blog", "Blog")
+                        .WithMany("BlogTags")
+                        .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
+                    b.HasOne("MVC_PustokPlus.Models.Tag", "Tag")
+                        .WithMany("BlogTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Blog");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("MVC_PustokPlus.Models.Category", b =>
@@ -200,7 +261,7 @@ namespace MVC_PustokPlus.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("MVC_PustokPlus.Models.ProductImages", b =>
+            modelBuilder.Entity("MVC_PustokPlus.Models.ProductImage", b =>
                 {
                     b.HasOne("MVC_PustokPlus.Models.Product", "Product")
                         .WithMany("ProductImages")
@@ -216,6 +277,11 @@ namespace MVC_PustokPlus.Migrations
                     b.Navigation("Blogs");
                 });
 
+            modelBuilder.Entity("MVC_PustokPlus.Models.Blog", b =>
+                {
+                    b.Navigation("BlogTags");
+                });
+
             modelBuilder.Entity("MVC_PustokPlus.Models.Category", b =>
                 {
                     b.Navigation("Children");
@@ -226,6 +292,11 @@ namespace MVC_PustokPlus.Migrations
             modelBuilder.Entity("MVC_PustokPlus.Models.Product", b =>
                 {
                     b.Navigation("ProductImages");
+                });
+
+            modelBuilder.Entity("MVC_PustokPlus.Models.Tag", b =>
+                {
+                    b.Navigation("BlogTags");
                 });
 #pragma warning restore 612, 618
         }

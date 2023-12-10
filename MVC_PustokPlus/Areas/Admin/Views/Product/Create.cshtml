@@ -37,11 +37,11 @@
                 <input asp-for="Count" class="form-control">
                 <span asp-validation-for="Count" class="text-danger"></span>
             </div>
-@*             <div class="form-group">
-                <label asp-for="ImageUrl"></label>
-                <input asp-for="ImageUrl" class="form-control">
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div> *@
+            <div class="form-group">
+                <label asp-for="FrontImageFile"></label>
+                <input asp-for="FrontImageFile" accept="image/*" class="form-control">
+                <span asp-validation-for="FrontImageFile" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Description"></label>
                 <textarea asp-for="Description" class="form-control"></textarea>

@@ -18,7 +18,7 @@
                 {
                     <section class="hero-area hero-slider-1">
                         <h1>@item.ProductName :</h1>
-                        @if (item.ImagePath == null)
+                        @if (item.CustomImages == null)
                         { 
                             <a>nothing</a>
                         }
@@ -32,15 +32,16 @@
                                         "slidesToShow": 1,
                                         "dots":true
                                         }'>
-                            @foreach(var image in item.ImagePath)
+                            @foreach(var imageInfo in item.CustomImages)
                             {
-                                @if(image != null)
+                                @if(imageInfo != null)
                                 {
                                 <div class="single-slide bg-shade-whisper  ">
+                                <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@imageInfo.Id">Delete</a>
                                     <div class="container">
                                         <div class="home-content text-center text-sm-left position-relative">
                                             <div class="hero-partial-image image-right">
-                                                <img src="~/@image" alt="">
+                                                <img src="~/@imageInfo.ImagePath" alt="">
                                             </div>
                                         </div>
                                     </div>
