@@ -5,6 +5,7 @@ using MVC_PustokPlus.Contexts;
 using MVC_PustokPlus.Helpers;
 using MVC_PustokPlus.Models;
 using System.IO;
+using System.Xml.Linq;
 
 namespace MVC_PustokPlus.Areas.Admin.Controllers;
 
@@ -21,9 +22,20 @@ public class ProductController : Controller
     // GET: ProductController
     public IActionResult Index()
     {
-        return View(_db.Products.Select(p => new AdminProductVM(p)
+        return View(_db.Products.Select(p => new AdminProductVM()
         {
-            Category = p.Category
+            Id = p.Id,
+            Name = p.Name,
+            Count = p.Count,
+            Description = p.Description,
+            Discount = p.Discount,
+            CostPrice = p.CostPrice,
+            SellPrice = p.SellPrice,
+            IsDeleted = p.IsDeleted,
+            CategoryId = p.CategoryId,
+            FrontImagePath = p.FrontImagePath,
+            ProductImages = p.ProductImages,
+            Category = p.Category,
         }));
     }
     // GET: ProductController/Create
@@ -42,7 +54,7 @@ public class ProductController : Controller
 
     // POST: ProductController/Create
     [HttpPost]
-    public async Task<ActionResult> Create(AdminProductVM vm)
+    public async Task<ActionResult> Create(AdminProductCreateVM vm)
     {
         if (vm.CostPrice > vm.SellPrice)
         {
@@ -94,31 +106,33 @@ public class ProductController : Controller
         Product product = await _db.Products.FirstOrDefaultAsync(p => p.Id == id);
         if (product == null) return NotFound();
 
-        return View(new AdminProductVM(product)
+        return View(new AdminProductCreateVM()
         {
-            Category = product.Category,
+            Name = product.Name,
+            Count = product.Count,
+            Description = product.Description,
+            Discount = product.Discount,
+            CostPrice = product.CostPrice,
+            SellPrice = product.SellPrice,
+            IsDeleted = product.IsDeleted,
+            CategoryId = product.CategoryId,
+            FrontImagePath = product.FrontImagePath,
         });
     }
 
     // POST: ProductController/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<ActionResult> Update(AdminProductVM vm)
+    public async Task<ActionResult> Update(int id, AdminProductCreateVM vm)
     {
+        Product product = await _db.Products.FirstOrDefaultAsync(x => x.Id == id);
+        if (product == null) return NotFound();
+
         if (vm.CostPrice > vm.SellPrice)
         {
             ModelState.AddModelError("CostPrice", "Sell price must be bigger than cost price");
         }
-        if(vm.FrontImageFile != null)
-        {
-            string filepath = Path.Combine(FileExtension.RootPath, vm.FrontImagePath);
-            if (vm.FrontImagePath != null && System.IO.File.Exists(filepath))
-            {
-                System.IO.File.Delete(filepath);
-            }
-            vm.FrontImagePath = await vm.FrontImageFile.SaveAsync("datas");
-        }
-        if ((!ModelState.IsValid) || vm.Id == null)
+        if (!ModelState.IsValid)
         {
             ViewBag.Categories = _db.Categories;
             return View(vm);
@@ -129,17 +143,33 @@ public class ProductController : Controller
             ViewBag.Categories = _db.Categories;
             return View(vm);
         }
-        Product product = new Product
+        if (vm.FrontImageFile != null) 
         {
-            Id = (int)vm.Id,
-            Name = vm.Name,
-            Count = vm.Count,
-            Description = vm.Description,
-            Discount = vm.Discount,
-            CostPrice = vm.CostPrice,
-            SellPrice = vm.SellPrice,
-            CategoryId = vm.CategoryId
-        };
+            if (!vm.FrontImageFile.IsCorrectType())
+            {
+                ModelState.AddModelError("ImageFile", "Wrong file type");
+            }
+            if (!vm.FrontImageFile.IsValidSize())
+            {
+                ModelState.AddModelError("ImageFile", "Files length must be less than kb");
+            }
+            if (product.FrontImagePath != null && ModelState.IsValid)
+            {
+                string filepath = Path.Combine(FileExtension.RootPath, product.FrontImagePath);
+                if (System.IO.File.Exists(filepath)) System.IO.File.Delete(filepath);
+            }
+            product.FrontImagePath = await vm.FrontImageFile.SaveAsync("datas");
+        }
+
+        product.Id = id;
+        product.Name = vm.Name;
+        product.Count = vm.Count;
+        product.Description = vm.Description;
+        product.Discount = vm.Discount;
+        product.CostPrice = vm.CostPrice;
+        product.SellPrice = vm.SellPrice;
+        product.CategoryId = vm.CategoryId;
+        product.IsDeleted = vm.IsDeleted;
 
         _db.Products.Update(product);
         await _db.SaveChangesAsync();

@@ -1,5 +1,4 @@
-﻿
-@model AdminProductVM
+﻿@model AdminProductCreateVM
 @{
     ViewData["Title"] = "Create Product";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -11,7 +10,7 @@
         <h6 class="m-0 font-weight-bold text-primary">Create Product</h6>
     </div>
     <div class="card-body">
-        <form asp-action="Create" method="post">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label asp-for="Name"></label>
                 <input asp-for="Name" class="form-control">

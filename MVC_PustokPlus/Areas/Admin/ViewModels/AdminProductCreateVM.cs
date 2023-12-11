@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVC_PustokPlus.Areas.Admin.ViewModels;
 
-public class AdminProductVM
+public class AdminProductCreateVM
 {
-
-    public int? Id { get; set; }
 
     [MaxLength(64)]
     public string Name { get; set; }
@@ -22,8 +20,8 @@ public class AdminProductVM
     public int CategoryId { get; set; }
     public bool IsDeleted { get; set; } = false;
     public string? FrontImagePath { get; set; }
-
     public IFormFile? FrontImageFile { get; set; }
+
     public Category? Category { get; set; }
     public IEnumerable<ProductImage>? ProductImages { get; set; }
 }

@@ -2,28 +2,24 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace MVC_PustokPlus.Areas.Admin.ViewModels;
+namespace MVC_PustokPlus.ViewModels;
 
-public class AdminProductVM
+public class ProductSliderVM
 {
-
-    public int? Id { get; set; }
-
     [MaxLength(64)]
     public string Name { get; set; }
+    [MaxLength(128)]
     public string Description { get; set; }
     [Column(TypeName = "money")]
-    public decimal SellPrice { get; set; }
+    public string SellPrice { get; set; }
     [Column(TypeName = "money")]
-    public decimal CostPrice { get; set; }
+    public string CostPrice { get; set; }
     [Range(0, 100)]
     public float Discount { get; set; }
     public ushort Count { get; set; }
-    public int CategoryId { get; set; }
     public bool IsDeleted { get; set; } = false;
-    public string? FrontImagePath { get; set; }
+    public string FrontImagePath { get; set; }
 
-    public IFormFile? FrontImageFile { get; set; }
-    public Category? Category { get; set; }
-    public IEnumerable<ProductImage>? ProductImages { get; set; }
+    public Category Category { get; set; }
+    public ICollection<ProductImage>? ProductImages { get; set; }
 }
