@@ -1,12 +1,20 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC_PustokPlus.Areas.Admin.ViewModels;
+using MVC_PustokPlus.Contexts;
 
 namespace MVC_PustokPlus.Areas.Admin.Controllers;
 
 [Area("Admin")]
 public class BlogController : Controller
 {
+    Pustoc02DbContext _db { get; }
+
+    public BlogController(Pustoc02DbContext db)
+    {
+        this._db = db;
+    }
     // GET: BlogController
     public ActionResult Index()
     {
@@ -22,13 +30,14 @@ public class BlogController : Controller
     // GET: BlogController/Create
     public ActionResult Create()
     {
+        ViewBag.Authors = new SelectList(_db.Authors, "Id", "Name");
         return View();
     }
 
     // POST: BlogController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Create(BlogListVM vm)
+    public ActionResult Create(BlogVM vm)
     {
 
         return View(vm);

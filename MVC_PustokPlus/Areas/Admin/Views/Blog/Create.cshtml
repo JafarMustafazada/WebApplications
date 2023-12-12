@@ -1,0 +1,42 @@
+﻿@model BlogVM
+@{
+    ViewData["Title"] = "Create Blog";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Create Product</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+@*             <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SellPrice"></label>
+                <input asp-for="SellPrice" class="form-control">
+                <span asp-validation-for="SellPrice" class="text-danger"></span>
+            </div> *@
+@*             <div class="form-group">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <label asp-for="AuthorId">Authors</label>
+                <select class="form-control" asp-for="AuthorId" asp-items='@ViewBag.Authors'>
+                    <option disabled selected>Select category</option>
+                </select>
+                <span asp-validation-for="AuthorId" class="text-danger"></span>
+            </div>
+
+            <button class="btn btn-success">Submit!</button>
+
+        </form>
+    </div>
+</div>
+

@@ -22,8 +22,10 @@ public class AdminProductVM
     public int CategoryId { get; set; }
     public bool IsDeleted { get; set; } = false;
     public string? FrontImagePath { get; set; }
+    public string? BackImagePath { get; set; }
 
     public IFormFile? FrontImageFile { get; set; }
+    public IFormFile? BackImageFile { get; set; }
     public Category? Category { get; set; }
     public IEnumerable<ProductImage>? ProductImages { get; set; }
 }

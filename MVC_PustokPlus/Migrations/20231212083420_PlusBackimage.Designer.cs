@@ -4,6 +4,7 @@ using MVC_PustokPlus.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC_PustokPlus.Migrations
 {
     [DbContext(typeof(Pustoc02DbContext))]
-    partial class Pustoc02DbContextModelSnapshot : ModelSnapshot
+    [Migration("20231212083420_PlusBackimage")]
+    partial class PlusBackimage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

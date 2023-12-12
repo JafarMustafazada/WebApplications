@@ -22,6 +22,7 @@ public class Product
     public ushort Count { get; set; }
     public bool IsDeleted { get; set; } = false;
     public string FrontImagePath { get; set; }
+    public string BackImagePath { get; set; }
 
     public Category? Category { get; set; }
     public ICollection<ProductImage>? ProductImages { get; set; }

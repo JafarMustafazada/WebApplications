@@ -27,6 +27,7 @@ public class HomeController : Controller
             CostPrice = p.SellPrice.ToString("0.00"),
             Count = p.Count,
             FrontImagePath = p.FrontImagePath,
+            BackImagePath = p.BackImagePath,
             ProductImages = p.ProductImages,
         }));
     }

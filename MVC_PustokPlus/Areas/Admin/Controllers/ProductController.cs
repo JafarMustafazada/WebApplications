@@ -34,6 +34,7 @@ public class ProductController : Controller
             IsDeleted = p.IsDeleted,
             CategoryId = p.CategoryId,
             FrontImagePath = p.FrontImagePath,
+            BackImagePath = p.BackImagePath,
             ProductImages = p.ProductImages,
             Category = p.Category,
         }));
@@ -54,34 +55,46 @@ public class ProductController : Controller
 
     // POST: ProductController/Create
     [HttpPost]
-    public async Task<ActionResult> Create(AdminProductCreateVM vm)
+    public async Task<ActionResult> Create(AdminProductVM vm)
     {
         if (vm.CostPrice > vm.SellPrice)
         {
             ModelState.AddModelError("CostPrice", "Sell price must be bigger than cost price");
         }
+        if (!await _db.Categories.AnyAsync(c => c.Id == vm.CategoryId))
+        {
+            ModelState.AddModelError("CategoryId", "Category doesnt exist");
+        }
         if (vm.FrontImageFile != null) 
         {
             if (!vm.FrontImageFile.IsCorrectType())
             {
-                ModelState.AddModelError("ImageFile", "Wrong file type");
+                ModelState.AddModelError("FrontImageFile", "Wrong file type");
             }
             if (!vm.FrontImageFile.IsValidSize())
             {
-                ModelState.AddModelError("ImageFile", "Files length must be less than kb");
+                ModelState.AddModelError("FrontImageFile", "Files length must be less than kb");
             }
         }
-        if ((!ModelState.IsValid) || vm.FrontImageFile == null)
+        else ModelState.AddModelError("FrontImageFile", "You should input file");
+        if (vm.BackImageFile != null)
+        {
+            if (!vm.BackImageFile.IsCorrectType())
+            {
+                ModelState.AddModelError("BackImageFile", "Wrong file type");
+            }
+            if (!vm.BackImageFile.IsValidSize())
+            {
+                ModelState.AddModelError("BackImageFile", "Files length must be less than kb");
+            }
+        }
+        else ModelState.AddModelError("BackImageFile", "You should input file");
+        if ((!ModelState.IsValid))
         {
             ViewBag.Categories = _db.Categories;
             return View(vm);
         }
-        if (!await _db.Categories.AnyAsync(c => c.Id == vm.CategoryId))
-        {
-            ModelState.AddModelError("CategoryId", "Category doesnt exist");
-            ViewBag.Categories = _db.Categories;
-            return View(vm);
-        }
+
         Product prod = new Product
         {
             Name = vm.Name,
@@ -92,6 +105,7 @@ public class ProductController : Controller
             SellPrice = vm.SellPrice,
             CategoryId = vm.CategoryId,
             FrontImagePath = vm.FrontImageFile.SaveAsync("datas").Result,
+            BackImagePath = vm.BackImageFile.SaveAsync("datas").Result
         };
         await _db.Products.AddAsync(prod);
         await _db.SaveChangesAsync();
@@ -99,14 +113,15 @@ public class ProductController : Controller
     }
 
     // GET: ProductController/Edit/5
-    public async Task<ActionResult> Update(int id)
+    public async Task<ActionResult> Update(int? id)
     {
+        if (id == null || id <= 0) return BadRequest();
         ViewBag.Categories = _db.Categories;
         ViewBag.Id = id;
         Product product = await _db.Products.FirstOrDefaultAsync(p => p.Id == id);
         if (product == null) return NotFound();
 
-        return View(new AdminProductCreateVM()
+        return View(new AdminProductVM()
         {
             Name = product.Name,
             Count = product.Count,
@@ -117,14 +132,16 @@ public class ProductController : Controller
             IsDeleted = product.IsDeleted,
             CategoryId = product.CategoryId,
             FrontImagePath = product.FrontImagePath,
+            BackImagePath = product.BackImagePath,
         });
     }
 
     // POST: ProductController/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<ActionResult> Update(int id, AdminProductCreateVM vm)
+    public async Task<ActionResult> Update(int? id, AdminProductVM vm)
     {
+        if (id == null || id <= 0) return BadRequest();
         Product product = await _db.Products.FirstOrDefaultAsync(x => x.Id == id);
         if (product == null) return NotFound();
 
@@ -132,36 +149,52 @@ public class ProductController : Controller
         {
             ModelState.AddModelError("CostPrice", "Sell price must be bigger than cost price");
         }
-        if (!ModelState.IsValid)
-        {
-            ViewBag.Categories = _db.Categories;
-            return View(vm);
-        }
         if (!await _db.Categories.AnyAsync(c => c.Id == vm.CategoryId))
         {
             ModelState.AddModelError("CategoryId", "Category doesnt exist");
-            ViewBag.Categories = _db.Categories;
-            return View(vm);
         }
         if (vm.FrontImageFile != null) 
         {
             if (!vm.FrontImageFile.IsCorrectType())
             {
-                ModelState.AddModelError("ImageFile", "Wrong file type");
+                ModelState.AddModelError("FrontImageFile", "Wrong file type");
             }
-            if (!vm.FrontImageFile.IsValidSize())
+            if (!vm.FrontImageFile.IsValidSize(200))
             {
-                ModelState.AddModelError("ImageFile", "Files length must be less than kb");
+                ModelState.AddModelError("FrontImageFile", "Files length must be less than kb");
             }
-            if (product.FrontImagePath != null && ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 string filepath = Path.Combine(FileExtension.RootPath, product.FrontImagePath);
                 if (System.IO.File.Exists(filepath)) System.IO.File.Delete(filepath);
             }
             product.FrontImagePath = await vm.FrontImageFile.SaveAsync("datas");
         }
+        if (vm.BackImageFile != null)
+        {
+            if (!vm.BackImageFile.IsCorrectType())
+            {
+                ModelState.AddModelError("BackImageFile", "Wrong file type");
+            }
+            if (!vm.BackImageFile.IsValidSize(200))
+            {
+                ModelState.AddModelError("BackImageFile", "Files length must be less than kb");
+            }
+            if (ModelState.IsValid)
+            {
+                string filepath = Path.Combine(FileExtension.RootPath, product.BackImagePath);
+                if (System.IO.File.Exists(filepath)) System.IO.File.Delete(filepath);
+            }
+            product.BackImagePath = await vm.BackImageFile.SaveAsync("datas");
+        }
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Categories = _db.Categories;
+            vm.FrontImagePath = product.FrontImagePath;
+            vm.BackImagePath = product.BackImagePath;
+            return View(vm);
+        }
 
-        product.Id = id;
         product.Name = vm.Name;
         product.Count = vm.Count;
         product.Description = vm.Description;

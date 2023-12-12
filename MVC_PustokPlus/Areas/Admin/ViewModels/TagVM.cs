@@ -1,6 +1,6 @@
 ﻿namespace MVC_PustokPlus.Areas.Admin.ViewModels
 {
-    public class TagListVM
+    public class TagVM
     {
         public string Title { get; set; }
     }

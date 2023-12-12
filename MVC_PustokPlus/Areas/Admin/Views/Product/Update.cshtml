@@ -1,4 +1,4 @@
-﻿@model AdminProductCreateVM
+﻿@model AdminProductVM
 @{
     ViewData["Title"] = "Update Product";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -38,8 +38,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="FrontImageFile"></label>
+                <img src="~/@Model.FrontImagePath" style="width:150px;height:150px;">
                 <input asp-for="FrontImageFile" accept="image/*" class="form-control">
                 <span asp-validation-for="FrontImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BackImageFile"></label>
+                <img src="~/@Model.BackImagePath" style="width:150px;height:150px;">
+                <input asp-for="BackImageFile" accept="image/*" class="form-control">
+                <span asp-validation-for="BackImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description"></label>

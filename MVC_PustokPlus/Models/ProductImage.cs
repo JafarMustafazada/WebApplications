@@ -7,7 +7,6 @@ public class ProductImage
     public int ProductId { get; set; }
 
     public string ImagePath { get; set; }
-    public bool IsActive { get; set; } = true;
 
     public Product? Product { get; set; }
 }
