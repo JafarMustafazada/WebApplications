@@ -30,7 +30,7 @@ public class BlogController : Controller
     // GET: BlogController/Create
     public ActionResult Create()
     {
-        ViewBag.Authors = new SelectList(_db.Authors, "Id", "Name");
+        ViewBag.Authors = new SelectList(_db.Authors.Select(a => new { a.Id, FullName = (a.Name + "_" + a.Surname) }), "Id", "FullName");
         return View();
     }
 

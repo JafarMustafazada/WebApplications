@@ -4,6 +4,55 @@
     ViewData["Title"] = "Pustok - Book Store HTML Template Index";
     Layout = "~/Views/Shared/_LayoutPustok.cshtml";
 }
+@section scripts{
+    <script>
+        const loadcontent = document.getElementById("loadmore");
+        var iter = 0;
+
+        document.getElementById("loadmore-btn").addEventListener("click", function (event) {
+            event.preventDefault()
+            LoadNext();
+        });
+        function GetJson(link) {
+            return fetch(link).then(res => res.json());
+        }
+        async function LoadNext() {
+            var url = location.origin + "/Home/JsonData?count=4&from=" + iter;
+            //console.log(url);
+            var rawjson = await GetJson(url);
+            console.log(rawjson);
+            for (let i = 0; i < rawjson.length; i++) {
+                let element = rawjson[i];
+                loadcontent.innerHTML +=
+                    `
+                <div class="single-slide">
+                <div class="product-card card-style-list">
+                    <div class="card-image">
+                                <img src="/${element.frontImagePath}" alt="">
+                    </div>
+                    <div class="product-card--body">
+                        <div class="product-header">
+                            <a href="#" class="author">
+                                Rpple
+                            </a>
+                            <h3><a href="Home/product-details">${element.name}</a></h3>
+                        </div>
+                        <div class="price-block">
+                            <span class="price">£51.20</span>
+                            <del class="price-old">£51.20</del>
+                            <span class="price-discount">20%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+                iter += 1;
+            }
+        }
+
+        LoadNext();
+    </script>
+}
 
 <!--=================================
 Hero Area
@@ -186,10 +235,10 @@ Home Slider Tab
                             {"breakpoint":480, "settings": {"slidesToShow": 1} },
                             {"breakpoint":320, "settings": {"slidesToShow": 1} }
                         ]'>
-                        @{
-                            @foreach(var item in Model)
-                            {
-                            <div class="single-slide">
+
+@*                         @foreach(var item in Model)
+                        {
+                        <div class="single-slide">
                             <div class="product-card">
                                 <div class="product-header">
                                     <a href="#" class="author">
@@ -219,7 +268,7 @@ Home Slider Tab
                                                     <i class="fas fa-random"></i>
                                                 </a>
                                                 <a href="#" data-toggle="modal" data-target="#quickModal"
-                                                   class="single-btn">
+                                                    class="single-btn">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             </div>
@@ -233,9 +282,8 @@ Home Slider Tab
                                 </div>
                             </div>
                         </div>
-                                
-                            }
-}
+                        } *@
+
                     </div>
                 </div>
                 <div class="tab-pane" id="men" role="tabpanel" aria-labelledby="men-tab">
@@ -1879,7 +1927,7 @@ CHILDREN’S BOOKS
         <div class="section-title section-title--bordered">
             <h2>CHILDREN’S BOOKS</h2>
         </div>
-        <div class="product-list-slider slider-two-column product-slider multiple-row sb-slick-slider slider-border-multiple-row"
+        <div id="loadmore" class="product-list-slider slider-two-column product-slider multiple-row sb-slick-slider slider-border-multiple-row"
              data-slick-setting='{
                                             "autoplay": true,
                                             "autoplaySpeed": 8000,
@@ -1893,7 +1941,9 @@ CHILDREN’S BOOKS
                                             {"breakpoint":575, "settings": {"slidesToShow": 1} },
                                             {"breakpoint":490, "settings": {"slidesToShow": 1} }
                                         ]'>
-            <div class="single-slide">
+
+            
+@*             <div class="single-slide">
                 <div class="product-card card-style-list">
                     <div class="card-image">
                         <img src="~/image/products/product-2.jpg" alt="">
@@ -1912,114 +1962,11 @@ CHILDREN’S BOOKS
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="single-slide">
-                <div class="product-card card-style-list">
-                    <div class="card-image">
-                        <img src="~/image/products/product-1.jpg" alt="">
-                    </div>
-                    <div class="product-card--body">
-                        <div class="product-header">
-                            <a href="#" class="author">
-                                Dpple
-                            </a>
-                            <h3>
-                                <a href="Home/product-details">Turn Your BOOK Into High Machine</a>
-                            </h3>
-                        </div>
-                        <div class="price-block">
-                            <span class="price">£51.20</span>
-                            <del class="price-old">£51.20</del>
-                            <span class="price-discount">20%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="single-slide">
-                <div class="product-card card-style-list">
-                    <div class="card-image">
-                        <img src="~/image/products/product-3.jpg" alt="">
-                    </div>
-                    <div class="product-card--body">
-                        <div class="product-header">
-                            <a href="#" class="author">
-                                Epple
-                            </a>
-                            <h3><a href="Home/product-details">BOOK: Do You Really Need It? This </a></h3>
-                        </div>
-                        <div class="price-block">
-                            <span class="price">£51.20</span>
-                            <del class="price-old">£51.20</del>
-                            <span class="price-discount">20%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="single-slide">
-                <div class="product-card card-style-list">
-                    <div class="card-image">
-                        <img src="~/image/products/product-4.jpg" alt="">
-                    </div>
-                    <div class="product-card--body">
-                        <div class="product-header">
-                            <a href="#" class="author">
-                                Ppple
-                            </a>
-                            <h3>
-                                <a href="Home/product-details">Here Is A Quick Cure For Book</a>
-                            </h3>
-                        </div>
-                        <div class="price-block">
-                            <span class="price">£51.20</span>
-                            <del class="price-old">£51.20</del>
-                            <span class="price-discount">20%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="single-slide">
-                <div class="product-card card-style-list">
-                    <div class="card-image">
-                        <img src="~/image/products/product-5.jpg" alt="">
-                    </div>
-                    <div class="product-card--body">
-                        <div class="product-header">
-                            <a href="#" class="author">
-                                Ypple
-                            </a>
-                            <h3>
-                                <a href="Home/product-details">What You Can Learn From Bill Gates</a>
-                            </h3>
-                        </div>
-                        <div class="price-block">
-                            <span class="price">£51.20</span>
-                            <del class="price-old">£51.20</del>
-                            <span class="price-discount">20%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="single-slide">
-                <div class="product-card card-style-list">
-                    <div class="card-image">
-                        <img src="~/image/products/product-6.jpg" alt="">
-                    </div>
-                    <div class="product-card--body">
-                        <div class="product-header">
-                            <a href="#" class="author">
-                                Wpple
-                            </a>
-                            <h3><a href="Home/product-details">3 Ways Create Better BOOK With</a></h3>
-                        </div>
-                        <div class="price-block">
-                            <span class="price">£51.20</span>
-                            <del class="price-old">£51.20</del>
-                            <span class="price-discount">20%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </div> *@
+
+
         </div>
+        <button id="loadmore-btn">Load More</button>
     </div>
 </section>
 <!--=================================
