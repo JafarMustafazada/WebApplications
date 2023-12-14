@@ -6,6 +6,25 @@ namespace MVC_PustokPlus.ViewModels;
 
 public class ProductSliderVM
 {
+    public ProductSliderVM()
+    {
+        
+    }
+    public ProductSliderVM(Product product)
+    {
+        this.Name = product.Name;
+        this.Count = product.Count;
+        this.Description = product.Description;
+        this.Discount = product.Discount;
+        this.SellPrice = (product.SellPrice * (100 - (decimal)product.Discount) / 100).ToString("0.00");
+        this.Category = product.Category;
+        this.CostPrice = product.SellPrice.ToString("0.00");
+        this.IsDeleted = product.IsDeleted;
+        this.FrontImagePath = product.FrontImagePath;
+        this.BackImagePath = product.BackImagePath;
+        this.ProductImages = product.ProductImages;
+    }
+
     [MaxLength(64)]
     public string Name { get; set; }
     [MaxLength(128)]
