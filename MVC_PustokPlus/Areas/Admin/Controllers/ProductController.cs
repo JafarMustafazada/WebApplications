@@ -236,4 +236,12 @@ public class ProductController : Controller
             return View();
         }
     }
+    public async Task<IActionResult> ProductPagination(int page = 1, int count = 8)
+    {
+        var items = _db.Products.Where(p => !p.IsDeleted).Skip((page - 1) * count).Take(count).Select(p => new AdminProductVM(p));
+        int totalCount = await _db.Products.CountAsync(x => !x.IsDeleted);
+        //PaginatonVM<IEnumerable<AdminProductListItemVM>> pag = new(totalCount, page, (int)Math.Ceiling((decimal)totalCount / count), items);
+
+        return PartialView("_ProductPaginationPartial", items);
+    }
 }

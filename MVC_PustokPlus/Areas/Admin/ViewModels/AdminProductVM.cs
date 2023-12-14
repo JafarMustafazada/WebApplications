@@ -6,6 +6,23 @@ namespace MVC_PustokPlus.Areas.Admin.ViewModels;
 
 public class AdminProductVM
 {
+    public AdminProductVM() { }
+    public AdminProductVM(Product product)
+    {
+        this.Id = product.Id;
+        this.Name = product.Name;
+        this.Count = product.Count;
+        this.Description = product.Description;
+        this.Discount = product.Discount;
+        this.CostPrice = product.CostPrice;
+        this.SellPrice = product.SellPrice;
+        this.IsDeleted = product.IsDeleted;
+        this.CategoryId = product.CategoryId;
+        this.FrontImagePath = product.FrontImagePath;
+        this.BackImagePath = product.BackImagePath;
+        this.ProductImages = product.ProductImages;
+        this.Category = product.Category;
+    }
 
     public int? Id { get; set; }
 
