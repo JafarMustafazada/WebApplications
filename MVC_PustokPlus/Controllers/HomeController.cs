@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using MVC_PustokPlus.Contexts;
 using MVC_PustokPlus.Models;
 using MVC_PustokPlus.ViewModels;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace MVC_PustokPlus.Controllers;
@@ -32,6 +34,34 @@ public class HomeController : Controller
         //    BackImagePath = p.BackImagePath,
         //    ProductImages = p.ProductImages,
         //}));
+    }
+    public async Task<IActionResult> AddToCart(int? id)
+    {
+        if (id == null || id <= 0) return BadRequest();
+        if (!await _db.Products.AnyAsync(p => p.Id == id)) return NotFound();
+
+        var basket = JsonConvert.DeserializeObject<List<BasketProductVM>>(HttpContext.Request.Cookies["basket"] ?? "[]");
+        var existItem = basket.Find(b => b.Id == id);
+
+        if (existItem == null)
+        {
+            basket.Add(new BasketProductVM
+            {
+                Id = (int)id,
+                Count = 1
+            });
+        }
+        else
+        {
+            existItem.Count++;
+        }
+
+        HttpContext.Response.Cookies.Append("basket", JsonConvert.SerializeObject(basket), new CookieOptions
+        {
+            MaxAge = TimeSpan.MaxValue
+        });
+
+        return Ok();
     }
     public async Task<IActionResult> JsonData(int count = 4, int from = 0)
     {

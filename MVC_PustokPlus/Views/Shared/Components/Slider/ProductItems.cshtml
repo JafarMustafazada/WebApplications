@@ -1,0 +1,49 @@
+﻿@model IEnumerable<ProductSliderVM>
+
+@foreach (var item in Model)
+{
+    <div class="single-slide" style="width:234px;">
+        <div class="product-card">
+            <div class="product-header">
+                <a href="#" class="author">
+                    Lpple
+                </a>
+                <h3>
+                    <a href="Home/product-details">
+                        @item.Name
+                    </a>
+                </h3>
+            </div>
+            <div class="product-card--body">
+                <div class="card-image">
+                    <img src="~/@item.FrontImagePath" alt="~/image/products/product-2.jpg">
+                    <div class="hover-contents">
+                        <a href="Home/product-details" class="hover-image">
+                            <img src="~/@item.BackImagePath" alt="~/image/products/product-1.jpg">
+                        </a>
+                        <div class="hover-btns">
+                            <button onclick="UpdateCart(@item.Id)" id="fdisplay@{@item.Id}" class="single-btn">
+                                <i class="fas fa-shopping-basket"></i>
+                            </button>
+                            <a href="Home/wishlist" class="single-btn">
+                                <i class="fas fa-heart"></i>
+                            </a>
+                            <a href="Home/compare" class="single-btn">
+                                <i class="fas fa-random"></i>
+                            </a>
+                            <a href="#" data-toggle="modal" data-target="#quickModal"
+                               class="single-btn">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="price-block">
+                    <span class="price">£@item.SellPrice</span>
+                    <del class="price-old">£@item.CostPrice</del>
+                    <span class="price-discount">@item.Discount %</span>
+                </div>
+            </div>
+        </div>
+    </div>
+}

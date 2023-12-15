@@ -13,9 +13,9 @@ public class SliderViewComponent : ViewComponent
         this._db = db;
     }
 
-    public async Task<IViewComponentResult> InvokeAsync()
+    public async Task<IViewComponentResult> InvokeAsync(string viewcshtml = "Default")
     {
-        return View(await _db.Products.Where(p => !p.IsDeleted).
+        return View(viewcshtml, await _db.Products.Where(p => !p.IsDeleted).
             OrderByDescending(p => p.Id).
             Take(3).Select(p => new ProductSliderVM(p)).
             ToListAsync());

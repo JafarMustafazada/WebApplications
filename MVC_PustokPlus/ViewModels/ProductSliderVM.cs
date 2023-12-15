@@ -12,6 +12,7 @@ public class ProductSliderVM
     }
     public ProductSliderVM(Product product)
     {
+        this.Id = product.Id;
         this.Name = product.Name;
         this.Count = product.Count;
         this.Description = product.Description;
@@ -24,7 +25,7 @@ public class ProductSliderVM
         this.BackImagePath = product.BackImagePath;
         this.ProductImages = product.ProductImages;
     }
-
+    public int? Id { get; set; }
     [MaxLength(64)]
     public string Name { get; set; }
     [MaxLength(128)]
