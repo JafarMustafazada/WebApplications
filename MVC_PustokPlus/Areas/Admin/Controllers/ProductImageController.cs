@@ -64,7 +64,7 @@ public class ProductImageController : Controller
                 {
                     ModelState.AddModelError("ImageFile", "Wrong file type");
                 }
-                if (!item.IsValidSize())
+                if (!item.IsValidSize(70000))
                 {
                     ModelState.AddModelError("ImageFile", "Files length must be less than kb");
                 }

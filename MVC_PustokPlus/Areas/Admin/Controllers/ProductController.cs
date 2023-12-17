@@ -159,7 +159,7 @@ public class ProductController : Controller
             {
                 ModelState.AddModelError("FrontImageFile", "Wrong file type");
             }
-            if (!vm.FrontImageFile.IsValidSize(200))
+            if (!vm.FrontImageFile.IsValidSize(70000))
             {
                 ModelState.AddModelError("FrontImageFile", "Files length must be less than kb");
             }
@@ -176,7 +176,7 @@ public class ProductController : Controller
             {
                 ModelState.AddModelError("BackImageFile", "Wrong file type");
             }
-            if (!vm.BackImageFile.IsValidSize(200))
+            if (!vm.BackImageFile.IsValidSize(70000))
             {
                 ModelState.AddModelError("BackImageFile", "Files length must be less than kb");
             }

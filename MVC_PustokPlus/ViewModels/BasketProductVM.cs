@@ -3,5 +3,5 @@
 public class BasketProductVM
 {
     public int Id { get; set; }
-    public int Count { get; set; }
+    public ushort Count { get; set; }
 }

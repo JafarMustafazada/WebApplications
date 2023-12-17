@@ -22,7 +22,8 @@
                             <img src="~/@item.BackImagePath" alt="~/image/products/product-1.jpg">
                         </a>
                         <div class="hover-btns">
-                            <button onclick="UpdateCart(@item.Id)" id="fdisplay@{@item.Id}" class="single-btn">
+                            <button onclick="addToCart(@item.Id)" id="addToCart@{@item.Id}" class="single-btn"
+                                asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.Id">
                                 <i class="fas fa-shopping-basket"></i>
                             </button>
                             <a href="Home/wishlist" class="single-btn">

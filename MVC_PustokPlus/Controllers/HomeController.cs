@@ -63,6 +63,29 @@ public class HomeController : Controller
 
         return Ok();
     }
+    public async Task<IActionResult> GetBasket()
+    {
+        var items = JsonConvert.DeserializeObject<List<BasketProductVM>>(HttpContext.Request.Cookies["basket"] ?? "[]");
+        var products = _db.Products.Where(p => items.Select(i => i.Id).Contains(p.Id));
+        List<ProductSliderVM> basketItems = new();
+        foreach (var item in products)
+        {
+            ushort count = items.Find(x => x.Id == item.Id).Count;
+            decimal price = (item.SellPrice * (100 - (decimal)item.Discount) / 100);
+
+            basketItems.Add(new ProductSliderVM
+            {
+                Id = item.Id,
+                Discount = item.Discount,
+                FrontImagePath = item.FrontImagePath,
+                Name = item.Name,
+                SellPrice = price.ToString("0.00"),
+                CostPrice = (price * count).ToString("0.00"),
+                Count = count,
+            });
+        }
+        return Json(basketItems);
+    }
     public async Task<IActionResult> JsonData(int count = 4, int from = 0)
     {
         var items = _db.Products.Where(p => p.IsDeleted == false).Skip(from).Take(count).Select(p => new ProductSliderVM
