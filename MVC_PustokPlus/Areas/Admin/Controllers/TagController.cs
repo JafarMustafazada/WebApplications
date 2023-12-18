@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MVC_PustokPlus.Areas.Admin.ViewModels;
 using MVC_PustokPlus.Contexts;
 using MVC_PustokPlus.Models;
@@ -16,9 +17,10 @@ public class TagController : Controller
         this._db = db;
     }
     // GET: TagBlogController
-    public ActionResult Index()
+    public async Task<ActionResult> Index()
     {
-        return View();
+		return View(await _db.Tags.Select(t => new Tag { Id = t.Id, Title = t.Title }).ToListAsync());
+		//return View();
     }
 
     // GET: TagBlogController/Details/5
@@ -35,18 +37,15 @@ public class TagController : Controller
     // POST: TagBlogController/CreateTag
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Create(TagVM vm)
+    public async Task<ActionResult> Create(TagVM vm)
     {
         if (!ModelState.IsValid)
         {
             return View(vm);
         }
-        _db.AddAsync(new Tag
-        {
-            Title = vm.Title,
-        });
-        _db.SaveChanges();
-        return RedirectToAction(nameof(Index));
+		await _db.Tags.AddAsync(new Tag { Title = vm.Title });
+		await _db.SaveChangesAsync();
+		return RedirectToAction(nameof(Index));
     }
 
 

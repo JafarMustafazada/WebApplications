@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<Blog>
+@model List<BlogVM>
 @{
     ViewData["Title"] = "Blog Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -17,6 +17,8 @@
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
+                        <th>Description</th>
+                        <th>Tags</th>
                         <th colspan="2">Action</th>
                     </tr>
                 </thead>
@@ -27,7 +29,16 @@
                         {
                             <tr>
                                 <td>@item.Id</td>
-                                <td>@item.</td>
+                                <td>@item.Title</td>
+                                <td>@item.Description</td>
+                                @if (item.Tags == null || item.Tags.Count() == 0)
+                                {
+                                    <td>No tag</td>
+                                }
+                                else
+                                {
+                                    <td>@string.Join(",",item.Tags.Select(x=>x.Title))</td>
+                                }
                                 <td class="text-center"><a class="btn btn-outline-info" asp-action="Update" asp-route-id="@item.Id">Update</a></td>
                                 <td class="text-center"><a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a></td>
                             </tr>
