@@ -71,7 +71,7 @@ public class ProductController : Controller
             {
                 ModelState.AddModelError("FrontImageFile", "Wrong file type");
             }
-            if (!vm.FrontImageFile.IsValidSize())
+            if (!vm.FrontImageFile.IsValidSize(123321))
             {
                 ModelState.AddModelError("FrontImageFile", "Files length must be less than kb");
             }
@@ -83,7 +83,7 @@ public class ProductController : Controller
             {
                 ModelState.AddModelError("BackImageFile", "Wrong file type");
             }
-            if (!vm.BackImageFile.IsValidSize())
+            if (!vm.BackImageFile.IsValidSize(123321))
             {
                 ModelState.AddModelError("BackImageFile", "Files length must be less than kb");
             }
@@ -238,10 +238,39 @@ public class ProductController : Controller
     }
     public async Task<IActionResult> ProductPagination(int page = 1, int count = 8)
     {
-        var items = _db.Products.Where(p => !p.IsDeleted).Skip((page - 1) * count).Take(count).Select(p => new AdminProductVM(p));
         int totalCount = await _db.Products.CountAsync(x => !x.IsDeleted);
-        //PaginatonVM<IEnumerable<AdminProductListItemVM>> pag = new(totalCount, page, (int)Math.Ceiling((decimal)totalCount / count), items);
+        int lastPage = totalCount / count;
+        bool HasPrev = true, HasNext = true;
+        lastPage = totalCount > lastPage * count ? lastPage + 1 : lastPage;
 
-        return PartialView("_ProductPaginationPartial", items);
+        if (page <= lastPage)
+        {
+            if (page == 1)
+            {
+                HasPrev = false;
+            }
+            if (page == lastPage)
+            {
+                HasNext = false;
+            }
+        }
+
+        var pag = new PaginationVM
+        {
+            HasPrev = HasPrev,
+            HasNext = HasNext,
+            CurrentPage = page,
+            Controller = "Product",
+            Action = "",
+            RouteCount = count,
+            TotalPages = lastPage,
+        };
+
+        return ViewComponent("Pagination", pag);
+    }
+    public async Task<IActionResult> ProductJson(int page = 1, int count = 8)
+    {
+        var items = _db.Products.Where(p => !p.IsDeleted).Skip((page - 1) * count).Take(count).Select(p => new AdminProductVM(p));
+        return Json(items);
     }
 }

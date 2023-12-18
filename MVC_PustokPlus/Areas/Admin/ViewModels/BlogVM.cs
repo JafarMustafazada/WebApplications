@@ -10,7 +10,7 @@ public class BlogVM
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime LastUpdatedAt { get; set; } = DateTime.Now;
 
-    public int Id { get; set; }
+    public int? Id { get; set; }
     public string? AuthorFull { get; set; }
     public ICollection<int>? TagsId { get; set; }
     public IEnumerable<Tag>? Tags { get; set; }

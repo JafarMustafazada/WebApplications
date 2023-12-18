@@ -23,12 +23,12 @@ public class BlogController : Controller
         return View(await _db.Blogs.Select(b => new BlogVM
         {
             Id = b.Id,
-            AuthorId = b.Author.Id,
+            AuthorFull = _db.Authors.Where(a => a.Id == b.Id).Select(a => a.Name + " " + a.Surname).FirstOrDefault(),
             CreatedAt = b.CreatedAt,
             LastUpdatedAt = b.LastUpdatedAt,
             Description = b.Description,
             Title = b.Title,
-            Tags = b.BlogTags.Select(b=>b.Tag)
+            Tags = b.BlogTags.Select(bt => bt.Tag),
         }).ToListAsync());
     }
 
@@ -76,6 +76,7 @@ public class BlogController : Controller
         {
             Title = vm.Title,
             Description = vm.Description,
+            AuthorId = vm.AuthorId,
             BlogTags = vm.TagsId.Select(id => new BlogTag
             {
                 TagId = id,
