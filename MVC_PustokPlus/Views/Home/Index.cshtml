@@ -206,53 +206,50 @@ Home Slider Tab
 							{"breakpoint":320, "settings": {"slidesToShow": 1} }
 						]'>
 
-						@*                         @foreach(var item in Model)
+						@foreach(var item in Model)
 						{
 						<div class="single-slide">
-						<div class="product-card">
-						<div class="product-header">
-						<a href="#" class="author">
-						jpple
-						</a>
-						<h3>
-						<a href="Home/product-details">
-						@item.Name
-						</a>
-						</h3>
+							<div class="product-card">
+								<div class="product-header">
+									<a href="#" class="author">jpple</a>
+									<h3>
+										<a href="Home/product-details">
+											@item.Name
+										</a>
+									</h3>
+								</div>
+								<div class="product-card--body">
+									<div class="card-image">
+										<img src="~/@item.FrontImagePath" alt="">
+										<div class="hover-contents">
+											<a href="Home/product-details" class="hover-image">
+												<img src="~/@item.BackImagePath" alt="">
+											</a>
+											<div class="hover-btns">
+												<a href="Home/cart" class="single-btn">
+													<i class="fas fa-shopping-basket"></i>
+												</a>
+												<a href="Home/wishlist" class="single-btn">
+													<i class="fas fa-heart"></i>
+												</a>
+												<a href="Home/compare" class="single-btn">
+													<i class="fas fa-random"></i>
+												</a>
+												<a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
+													<i class="fas fa-eye"></i>
+												</a>
+											</div>
+										</div>
+									</div>
+									<div class="price-block">
+										<span class="price">£@item.SellPrice</span>
+										<del class="price-old">£@item.CostPrice</del>
+										<span class="price-discount">@item.Discount %</span>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="product-card--body">
-						<div class="card-image">
-						<img src="~/@item.FrontImagePath" alt="">
-						<div class="hover-contents">
-						<a href="Home/product-details" class="hover-image">
-						<img src="~/@item.BackImagePath" alt="">
-						</a>
-						<div class="hover-btns">
-						<a href="Home/cart" class="single-btn">
-						<i class="fas fa-shopping-basket"></i>
-						</a>
-						<a href="Home/wishlist" class="single-btn">
-						<i class="fas fa-heart"></i>
-						</a>
-						<a href="Home/compare" class="single-btn">
-						<i class="fas fa-random"></i>
-						</a>
-						<a href="#" data-toggle="modal" data-target="#quickModal"
-						class="single-btn">
-						<i class="fas fa-eye"></i>
-						</a>
-						</div>
-						</div>
-						</div>
-						<div class="price-block">
-						<span class="price">£@item.SellPrice</span>
-						<del class="price-old">£@item.CostPrice</del>
-						<span class="price-discount">@item.Discount %</span>
-						</div>
-						</div>
-						</div>
-						</div>
-						} *@
+						}
 
 					</div>
 				</div>

@@ -20,20 +20,21 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
-        //return View(_db.Products.Where(p => p.IsDeleted == false).Select(p => new ProductSliderVM
-        //{
-        //    Name = p.Name,
-        //    Description = p.Description,
-        //    Discount = p.Discount,
-        //    SellPrice = (p.SellPrice * (100 - (decimal)p.Discount) / 100).ToString("0.00"),
-        //    Category = p.Category,
-        //    CostPrice = p.SellPrice.ToString("0.00"),
-        //    Count = p.Count,
-        //    FrontImagePath = p.FrontImagePath,
-        //    BackImagePath = p.BackImagePath,
-        //    ProductImages = p.ProductImages,
-        //}));
+        // most valuable top 5 products
+        return View(_db.Products.Where(p => p.IsDeleted == false).OrderByDescending(p => p.SellPrice).Take(5).Select(p => new ProductSliderVM
+        {
+            Name = p.Name,
+            Description = p.Description,
+            Discount = p.Discount,
+            SellPrice = (p.SellPrice * (100 - (decimal)p.Discount) / 100).ToString("0.00"),
+            Category = p.Category,
+            CostPrice = p.SellPrice.ToString("0.00"),
+            Count = p.Count,
+            FrontImagePath = p.FrontImagePath,
+            BackImagePath = p.BackImagePath,
+            ProductImages = p.ProductImages,
+        }));
+        //return View();
     }
     public async Task<IActionResult> AddToCart(int? id)
     {
