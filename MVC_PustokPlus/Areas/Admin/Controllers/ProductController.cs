@@ -261,7 +261,7 @@ public class ProductController : Controller
             HasNext = HasNext,
             CurrentPage = page,
             Controller = "Product",
-            Action = "",
+            Action = "ProductJson",
             RouteCount = count,
             TotalPages = lastPage,
         };

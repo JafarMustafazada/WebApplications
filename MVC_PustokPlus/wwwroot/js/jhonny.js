@@ -8,6 +8,7 @@ var urlHost = window.location.origin;
 
 document.querySelector("#addToCart").addEventListener("click", function (event) {
     event.preventDefault();
+    console.log(event.target.getAttribute('href'));
 });
 
 function addToCart(id) {
@@ -80,7 +81,6 @@ function addToCart(id) {
 
                         document.getElementById("basket1").innerHTML = head1 + temp1 + foot1;
                     })
-                console.log("true1");
             }
         });
 }
