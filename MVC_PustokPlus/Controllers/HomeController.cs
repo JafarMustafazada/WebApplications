@@ -65,6 +65,30 @@ public class HomeController : Controller
 
         return Ok();
     }
+    public async Task<IActionResult> RemoveFromCart(int? id)
+    {
+        if (id == null || id <= 0) return BadRequest();
+        if (!await _db.Products.AnyAsync(p => p.Id == id)) return NotFound();
+
+        var basket = JsonConvert.DeserializeObject<List<BasketProductVM>>(HttpContext.Request.Cookies["basket"] ?? "[]");
+        var existItem = basket.Find(b => b.Id == id);
+
+        if (existItem == null)
+        {
+            return NotFound();
+        }
+        else
+        {
+            basket.Remove(existItem);
+        }
+
+        HttpContext.Response.Cookies.Append("basket", JsonConvert.SerializeObject(basket), new CookieOptions
+        {
+            MaxAge = TimeSpan.MaxValue
+        });
+
+        return Ok();
+    }
     public async Task<IActionResult> GetBasket()
     {
         var items = JsonConvert.DeserializeObject<List<BasketProductVM>>(HttpContext.Request.Cookies["basket"] ?? "[]");
@@ -92,6 +116,7 @@ public class HomeController : Controller
     {
         var items = _db.Products.Where(p => p.IsDeleted == false).Skip(from).Take(count).Select(p => new ProductSliderVM
         {
+            Id = p.Id,
             Name = p.Name,
             Description = p.Description,
             Discount = p.Discount,

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC_PustokPlus.Areas.Admin.ViewModels;
 using MVC_PustokPlus.Contexts;
@@ -8,6 +9,7 @@ using MVC_PustokPlus.Models;
 namespace MVC_PustokPlus.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = "SuperAdmin, Admin, Moderator")]
 public class ProductImageController : Controller
 {
     Pustoc02DbContext _db { get; }

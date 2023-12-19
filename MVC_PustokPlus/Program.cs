@@ -48,7 +48,7 @@ public class Program
 		builder.Services.AddSession();
 
 		//builder.Services.AddHttpContextAccessor();
-		//builder.Services.AddScoped<LayoutService>();
+		builder.Services.AddScoped<LayoutService>();
 
 
 		var app = builder.Build();

@@ -20,7 +20,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="_sqlBak\" />
     <Folder Include="wwwroot\Admin\" />
     <Folder Include="wwwroot\datas\" />
   </ItemGroup>

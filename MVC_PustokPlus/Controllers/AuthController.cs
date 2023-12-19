@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC_PustokPlus.Models;
 using MVC_PustokPlus.ViewModels;
-using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using System.Data;
+using MVC_PustokPlus.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace MVC_PustokPlus.Controllers;
@@ -19,9 +18,9 @@ public class AuthController : Controller
 		UserManager<AppUser> userManager,
 		RoleManager<IdentityRole> roleManager)
 	{
-		_signInManager = signInManager;
-		_userManager = userManager;
-		_roleManager = roleManager;
+		this._signInManager = signInManager;
+		this._userManager = userManager;
+		this._roleManager = roleManager;
 	}
 	public IActionResult Login()
 	{
@@ -31,20 +30,20 @@ public class AuthController : Controller
 	public async Task<IActionResult> Login(string? returnUrl, LoginVM vm)
 	{
 		AppUser user;
-		if (vm.UsernameOrEmail.Contains("@"))
+		if (vm.UsernameOrEmail.Contains('@'))
 		{
-			user = await _userManager.FindByEmailAsync(vm.UsernameOrEmail);
+			user = await this._userManager.FindByEmailAsync(vm.UsernameOrEmail);
 		}
 		else
 		{
-			user = await _userManager.FindByNameAsync(vm.UsernameOrEmail);
+			user = await this._userManager.FindByNameAsync(vm.UsernameOrEmail);
 		}
 		if (user == null)
 		{
 			ModelState.AddModelError("", "Username or password is wrong");
 			return View(vm);
 		}
-		var result = await _signInManager.PasswordSignInAsync(user, vm.Password, vm.IsRemember, true);
+		var result = await this._signInManager.PasswordSignInAsync(user, vm.Password, vm.IsRemember, true);
 		if (!result.Succeeded)
 		{
 			if (result.IsLockedOut)
@@ -80,7 +79,7 @@ public class AuthController : Controller
 			Email = vm.Email,
 			UserName = vm.Username
 		};
-		var result = await _userManager.CreateAsync(user, vm.Password);
+		var result = await this._userManager.CreateAsync(user, vm.Password);
 		if (!result.Succeeded)
 		{
 			foreach (var error in result.Errors)
@@ -89,26 +88,26 @@ public class AuthController : Controller
 			}
 			return View(vm);
 		}
-		var roleResult = await _userManager.AddToRoleAsync(user, Roles.Member.ToString());
+		var roleResult = await this._userManager.AddToRoleAsync(user, AuthRoles.Member.ToString());
 		if (!roleResult.Succeeded)
 		{
 			ModelState.AddModelError("", "Something went wrong. Please contact admin");
 			return View(vm);
 		}
-		return View();
+		return RedirectToAction(nameof(Login));
 	}
 	public async Task<IActionResult> Logout()
 	{
-		await _signInManager.SignOutAsync();
+		await this._signInManager.SignOutAsync();
 		return RedirectToAction("Index", "Home");
 	}
 	public async Task<bool> CreateRoles()
 	{
-		foreach (var item in Enum.GetValues(typeof(Roles)))
+		foreach (var item in Enum.GetValues<AuthRoles>())
 		{
-			if (!await _roleManager.RoleExistsAsync(item.ToString()))
+			if (!await this._roleManager.RoleExistsAsync(item.ToString()))
 			{
-				var result = await _roleManager.CreateAsync(new IdentityRole
+				var result = await this._roleManager.CreateAsync(new IdentityRole
 				{
 					Name = item.ToString()
 				});
@@ -119,6 +118,55 @@ public class AuthController : Controller
 			}
 		}
 		return true;
+	}
+	[Authorize()]
+	public async Task<IActionResult> Profile()
+	{
+		AppUser user = await this._userManager.FindByNameAsync(User.Identity.Name);
+		if(user == null)
+		{
+			return NotFound();
+		}
+
+		return View(new UserVM
+		{
+			Username = user.UserName,
+			Fullname = user.Fullname,
+			Email = user.Email,
+			ProfileImageUrl = user.ProfileImageUrl,
+		});
+	}
+	[Authorize()]
+	[HttpPost]
+	public async Task<IActionResult> Profile(UserVM vm)
+	{
+		AppUser user = await this._userManager.FindByNameAsync(User.Identity.Name);
+		if (user == null)
+		{
+			return NotFound();
+		}
+
+		if (vm.ProfileImageFile != null)
+		{
+			if (!vm.ProfileImageFile.IsCorrectType())
+			{
+				ModelState.AddModelError("FrontImageFile", "Wrong file type");
+			}
+			if (!vm.ProfileImageFile.IsValidSize(70000))
+			{
+				ModelState.AddModelError("FrontImageFile", "Files length must be less than kb");
+			}
+			if (ModelState.IsValid)
+			{
+				string filepath = Path.Combine(FileExtension.RootPath, user.ProfileImageUrl);
+				if (System.IO.File.Exists(filepath)) System.IO.File.Delete(filepath);
+			}
+			user.ProfileImageUrl = await vm.ProfileImageFile.SaveAsync("datas");
+		}
+
+		await this._userManager.UpdateAsync(user);
+
+		return View(vm);
 	}
 }
 

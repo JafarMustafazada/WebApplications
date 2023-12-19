@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_PustokPlus.Areas.Admin.ViewModels;
 using MVC_PustokPlus.Contexts;
@@ -10,6 +11,7 @@ using System.Xml.Linq;
 namespace MVC_PustokPlus.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = "SuperAdmin, Admin, Moderator")]
 public class ProductController : Controller
 {
     Pustoc02DbContext _db { get; }
