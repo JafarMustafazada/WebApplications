@@ -123,7 +123,7 @@ public class AuthController : Controller
 	public async Task<IActionResult> Profile()
 	{
 		AppUser user = await this._userManager.FindByNameAsync(User.Identity.Name);
-		if(user == null)
+		if (user == null)
 		{
 			return NotFound();
 		}
@@ -150,11 +150,11 @@ public class AuthController : Controller
 		{
 			if (!vm.ProfileImageFile.IsCorrectType())
 			{
-				ModelState.AddModelError("FrontImageFile", "Wrong file type");
+				ModelState.AddModelError("", "Wrong file type");
 			}
 			if (!vm.ProfileImageFile.IsValidSize(70000))
 			{
-				ModelState.AddModelError("FrontImageFile", "Files length must be less than kb");
+				ModelState.AddModelError("", "Files length must be less than kb");
 			}
 			if (ModelState.IsValid)
 			{
@@ -164,8 +164,17 @@ public class AuthController : Controller
 			user.ProfileImageUrl = await vm.ProfileImageFile.SaveAsync("datas");
 		}
 
-		await this._userManager.UpdateAsync(user);
+		user.Fullname = vm.Fullname;
 
+
+		if (ModelState.IsValid)
+		{
+			await this._userManager.UpdateAsync(user);
+			return View(vm);
+		}
+
+		// will change;
+		vm.ProfileImageUrl = user.ProfileImageUrl;
 		return View(vm);
 	}
 }

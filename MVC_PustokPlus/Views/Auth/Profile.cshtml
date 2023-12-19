@@ -61,15 +61,8 @@
 									<div class="account-details-form">
 										<form method="post" enctype="multipart/form-data">
 											<div class="row">
-												<div class="col-lg-6 col-12  mb--30">
-													<input id="first-name" placeholder="First Name" type="text">
-												</div>
-												<div class="col-lg-6 col-12  mb--30">
-													<input id="last-name" placeholder="Last Name" type="text">
-												</div>
 												<div class="col-12  mb--30">
-													<input id="display-name" placeholder="Display Name"
-														   type="text">
+													<input asp-for="Fullname" id="display-name" placeholder="Full Name" type="text">
 												</div>
 												<div class="col-12  mb--30">
 													<input id="email" placeholder="Email Address" type="email">
@@ -93,10 +86,10 @@
 													<h4>Icon change</h4>
 												</div>
 												<div class="col-12  mb--30">
-													<label asp-for="ProfileImageFile"></label>
 													<img src="~/@Model.ProfileImageUrl" style="width:150px;height:150px;">
 													<input asp-for="ProfileImageFile" accept="image/*" class="form-control">
 												</div>
+												<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 												<div class="col-12">
 													<button class="btn btn--primary">Save Changes</button>
 												</div>
