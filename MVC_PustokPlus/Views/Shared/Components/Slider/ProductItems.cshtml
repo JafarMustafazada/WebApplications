@@ -22,10 +22,10 @@
                             <img src="~/@item.BackImagePath" alt="~/image/products/product-1.jpg">
                         </a>
                         <div class="hover-btns">
-                            <button onclick="addToCart(@item.Id)" id="addToCart@{@item.Id}" class="single-btn"
+                            <a onclick="addToCart(event)" class="single-btn"
                                 asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.Id">
                                 <i class="fas fa-shopping-basket"></i>
-                            </button>
+                            </a>
                             <a href="Home/wishlist" class="single-btn">
                                 <i class="fas fa-heart"></i>
                             </a>

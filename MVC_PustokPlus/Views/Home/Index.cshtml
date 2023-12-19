@@ -226,7 +226,8 @@ Home Slider Tab
 												<img src="~/@item.BackImagePath" alt="">
 											</a>
 											<div class="hover-btns">
-												<a href="Home/cart" class="single-btn">
+												<a onclick="addToCart(event)" class="single-btn"
+													asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.Id">
 													<i class="fas fa-shopping-basket"></i>
 												</a>
 												<a href="Home/wishlist" class="single-btn">

@@ -6,16 +6,18 @@ var urlHost = window.location.origin;
 //     urlMethod = urlHost + event.target.getAttribute("href");
 // }));
 
-document.querySelector("#addToCart").addEventListener("click", function (event) {
+// document.querySelector("#addToCart").addEventListener("click", function (event) {
+//     event.preventDefault();
+//     console.log(event.target.getAttribute('href'));
+    
+// });
+
+function addToCart(event) {
     event.preventDefault();
-    console.log(event.target.getAttribute('href'));
-});
+    let instance = event.currentTarget;
+    console.log(instance.getAttribute("href"));
 
-function addToCart(id) {
-    let instance = document.querySelector("#addToCart" + id);
-
-    console.log(instance.getAttribute("formaction"));
-    fetch(urlHost + instance.getAttribute("formaction"))
+    fetch(urlHost + instance.getAttribute("href"))
         .then(res => {
             if (res.ok) {
                 // Command: toastr["success"]("Product added")

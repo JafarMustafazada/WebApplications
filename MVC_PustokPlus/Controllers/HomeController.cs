@@ -23,6 +23,7 @@ public class HomeController : Controller
         // most valuable top 5 products
         return View(_db.Products.Where(p => p.IsDeleted == false).OrderByDescending(p => p.SellPrice).Take(5).Select(p => new ProductSliderVM
         {
+            Id = p.Id,
             Name = p.Name,
             Description = p.Description,
             Discount = p.Discount,

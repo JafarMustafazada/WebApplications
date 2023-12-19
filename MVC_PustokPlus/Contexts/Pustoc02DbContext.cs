@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MVC_PustokPlus.Models;
 using MVC_PustokPlus.Areas.Admin.ViewModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace MVC_PustokPlus.Contexts;
 
-public class Pustoc02DbContext : DbContext
+public class Pustoc02DbContext : IdentityDbContext
 {
     public Pustoc02DbContext(DbContextOptions<Pustoc02DbContext> opt) : base(opt) { }
 
@@ -15,4 +16,6 @@ public class Pustoc02DbContext : DbContext
     public DbSet<Author> Authors { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<BlogTag> BlogTags { get; set; }
+
+	public DbSet<AppUser> AppUsers { get; set; }
 }
