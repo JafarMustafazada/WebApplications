@@ -1,18 +1,1 @@
 ﻿
-@{
-    Layout = null;
-}
-
-
-
-
-<nav aria-label="Page navigation example">
-    <ul id="prod-pag" class="pagination">
-        <li class="page-item  @(Model.HasPrev ? "" : "disabled")"><a class='page-link' asp-action="ProductPagination" asp-route-page="@(Model.CurrentPage - 1)" asp-route-count="4">Previous</a></li>
-        @for (int i = 1; i <= Model.LastPage; i++)
-        {
-            <li class="page-item @(i == Model.CurrentPage ? "active" : "")"><a class="page-link" asp-action="ProductPagination" asp-route-page="@i" asp-route-count="4">@i</a></li>
-        }
-        <li class="page-item @(Model.HasNext ? "" : "disabled")"><a class="page-link" asp-action="ProductPagination" asp-route-page="@(Model.CurrentPage + 1)" asp-route-count="4">Next</a></li>
-    </ul>
-</nav>

@@ -26,6 +26,17 @@ if(profilepic){
     
 }
 
+function pagination(event) {
+    event.preventDefault();
+    let instance = event.currentTarget;
+    
+    fetch(urlHost + instance.getAttribute("href")).then( res => {
+        return res.text()
+    }).then( data => {
+        document.getElementById(instance.getAttribute("id")).innerHTML = data;
+    });
+}
+
 function UpdateBasket() {
     fetch(urlHost + basket)
         .then(res => res.json())

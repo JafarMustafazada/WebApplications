@@ -119,6 +119,10 @@ public class AuthController : Controller
 		}
 		return true;
 	}
+	public async Task UpdateUserIcon()
+	{
+
+	}
 	[Authorize()]
 	public async Task<IActionResult> Profile()
 	{
