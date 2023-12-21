@@ -3,6 +3,7 @@ using MVC_PustokPlus.Models;
 using MVC_PustokPlus.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using MVC_PustokPlus.Helpers;
+using MVC_PustokPlus.Services;
 using Microsoft.AspNetCore.Authorization;
 using System.Net.Mail;
 using System.Net;
@@ -24,7 +25,7 @@ public class AuthController : Controller
 		this._signInManager = signInManager;
 		this._userManager = userManager;
 		this._roleManager = roleManager;
-		_emailService = emailService;
+		this._emailService = emailService;
 	}
 	public IActionResult Login()
 	{
@@ -53,6 +54,11 @@ public class AuthController : Controller
 			if (result.IsLockedOut)
 			{
 				ModelState.AddModelError("", "Too many attempts wait until " + DateTime.Parse(user.LockoutEnd.ToString()).ToString("HH:mm"));
+			}
+			else if (!user.EmailConfirmed)
+			{
+				ModelState.AddModelError("", "Email is not confirmed");
+				ViewBag.EmailConfirmed = true;
 			}
 			else
 			{

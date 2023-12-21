@@ -1,4 +1,5 @@
 ﻿@using MVC_PustokPlus.Helpers;
+@using MVC_PustokPlus.Services;
 @inject LayoutService service;
 @{
 	string username = User.Identity.IsAuthenticated ? User.Identity.Name : "";

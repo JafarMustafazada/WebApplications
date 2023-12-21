@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MVC_PustokPlus.Contexts;
 using MVC_PustokPlus.Helpers;
 using MVC_PustokPlus.Models;
+using MVC_PustokPlus.Services;
 
 namespace MVC_PustokPlus;
 
@@ -50,7 +51,6 @@ public class Program
 		//builder.Services.AddHttpContextAccessor();
 		builder.Services.AddScoped<LayoutService>();
 		builder.Services.AddScoped<EmailService>();
-
 
 		var app = builder.Build();
         FileExtension.RootPath = app.Environment.WebRootPath;
