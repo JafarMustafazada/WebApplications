@@ -49,6 +49,7 @@ public class Program
 
 		//builder.Services.AddHttpContextAccessor();
 		builder.Services.AddScoped<LayoutService>();
+		builder.Services.AddScoped<EmailService>();
 
 
 		var app = builder.Build();

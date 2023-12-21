@@ -4,7 +4,8 @@ using MVC_PustokPlus.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using MVC_PustokPlus.Helpers;
 using Microsoft.AspNetCore.Authorization;
-
+using System.Net.Mail;
+using System.Net;
 
 namespace MVC_PustokPlus.Controllers;
 
@@ -13,14 +14,17 @@ public class AuthController : Controller
 	SignInManager<AppUser> _signInManager { get; }
 	UserManager<AppUser> _userManager { get; }
 	RoleManager<IdentityRole> _roleManager { get; }
+	EmailService _emailService { get; }
 
 	public AuthController(SignInManager<AppUser> signInManager,
 		UserManager<AppUser> userManager,
-		RoleManager<IdentityRole> roleManager)
+		RoleManager<IdentityRole> roleManager,
+		EmailService emailService)
 	{
 		this._signInManager = signInManager;
 		this._userManager = userManager;
 		this._roleManager = roleManager;
+		_emailService = emailService;
 	}
 	public IActionResult Login()
 	{
@@ -94,6 +98,15 @@ public class AuthController : Controller
 			ModelState.AddModelError("", "Something went wrong. Please contact admin");
 			return View(vm);
 		}
+
+		string body = "";
+		using (StreamReader readtext = new StreamReader("template1.html"))
+		{
+			body = readtext.ReadToEnd();
+		}
+		this._emailService.Send(user.Email, "Welcome to club buddy", body, true);
+
+
 		return RedirectToAction(nameof(Login));
 	}
 	public async Task<IActionResult> Logout()
