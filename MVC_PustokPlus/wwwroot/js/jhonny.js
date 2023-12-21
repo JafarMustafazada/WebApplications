@@ -29,11 +29,12 @@ if(profilepic){
 function pagination(event) {
     event.preventDefault();
     let instance = event.currentTarget;
+    console.log(urlHost + instance.getAttribute("href"));
     
-    fetch(urlHost + instance.getAttribute("href")).then( res => {
+    fetch(urlHost + instance.getAttribute("href")).then(res => {
         return res.text()
-    }).then( data => {
-        document.getElementById(instance.getAttribute("id")).innerHTML = data;
+    }).then(data => {
+        document.getElementById(instance.getAttribute("ptagId")).innerHTML = data;
     });
 }
 

@@ -35,12 +35,10 @@ public class Pagination<T> where T : IEnumerable
     public T Items { get; private set; }
     public PaginationPages Pagpag { get; private set; }
 
-    public Pagination(T items, int currentPage, int itemsPerPage, string controller, string action, string parentTag = "pagination")
+    public Pagination(T items, int currentPage, int itemsPerPage, int totalItems, string controller, string action = "Index", string parentTag = "pagination")
     {
-        int count = 0;
-        foreach (var item in items) { count++; }
         
         this.Items = items;
-        this.Pagpag = new(currentPage, itemsPerPage, count, controller, action, parentTag);
+        this.Pagpag = new(currentPage, itemsPerPage, totalItems, controller, action, parentTag);
     }
 }
