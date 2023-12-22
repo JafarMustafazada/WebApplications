@@ -1,5 +1,5 @@
 
-var urlHost = window.location.origin;
+var urlOrigin = window.location.origin;
 var basket = document.getElementById("getBasket").getAttribute("href");
 var profilepic = document.getElementById("profilepic")
 var USDollar = new Intl.NumberFormat('en-US', {
@@ -26,20 +26,10 @@ if(profilepic){
     
 }
 
-function pagination(event) {
-    event.preventDefault();
-    let instance = event.currentTarget;
-    console.log(urlHost + instance.getAttribute("href"));
-    
-    fetch(urlHost + instance.getAttribute("href")).then(res => {
-        return res.text()
-    }).then(data => {
-        document.getElementById(instance.getAttribute("ptagId")).innerHTML = data;
-    });
-}
+
 
 function UpdateBasket() {
-    fetch(urlHost + basket)
+    fetch(urlOrigin + basket)
         .then(res => res.json())
         .then(data => {
             let temp1 = "";
@@ -106,7 +96,7 @@ function addToCart(event) {
     let instance = event.currentTarget;
     //console.log(instance.getAttribute("href"));
 
-    fetch(urlHost + instance.getAttribute("href"))
+    fetch(urlOrigin + instance.getAttribute("href"))
         .then(res => {
             if (res.ok) {
                 // Command: toastr["success"]("Product added")
@@ -122,7 +112,7 @@ function removeFromCart(event) {
     let instance = event.currentTarget;
     //console.log(instance.getAttribute("href"));
 
-    fetch(urlHost + removebasket + instance.getAttribute("id"))
+    fetch(urlOrigin + removebasket + instance.getAttribute("id"))
         .then(res => {
             if (res.ok) {
                 // Command: toastr["success"]("Product added")

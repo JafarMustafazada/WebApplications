@@ -7,33 +7,33 @@
 <nav aria-label="Page navigation example">
     <ul id="prod-pag" class="pagination">
         <li class="page-item  @(Model.HasPrev ? "" : "disabled")">
-            <a class='page-link' onclick="pagination(event)" ptagId="@Model.ParentTag"
+            <a class='page-link' onclick="pagination(event)" ptagId="@Model.ParentTag" querry="@Model.Attributes"
             asp-controller="@Model.Controller" asp-action="@Model.Action" 
             asp-route-page="@(Model.CurrentPage - 1)" asp-route-ipp="@Model.ItemsPerPage">Previous</a>
         </li>
         <li class="page-item @(Model.HasNext ? "" : "disabled")">
-            <a class="page-link" onclick="pagination(event)" ptagId="@Model.ParentTag"
+            <a class="page-link" onclick="pagination(event)" ptagId="@Model.ParentTag" querry="@Model.Attributes"
             asp-controller="@Model.Controller" asp-action="@Model.Action" 
             asp-route-page="@(Model.CurrentPage + 1)" asp-route-ipp="@Model.ItemsPerPage">Next</a>
         </li>
         
         @for (int i = 1; i < Model.CurrentPage; i++) {
         <li class="page-item">
-            <a class="page-link" onclick="pagination(event)" ptagId="@Model.ParentTag"
+            <a class="page-link" onclick="pagination(event)" ptagId="@Model.ParentTag" querry="@Model.Attributes"
             asp-controller="@Model.Controller" asp-action="@Model.Action" 
             asp-route-page="@i" asp-route-ipp="@Model.ItemsPerPage">@i</a>
         </li>
         }
 
         <li class="page-item active">
-            <a class="page-link" onclick="pagination(event)" ptagId="@Model.ParentTag"
+            <a class="page-link" onclick="pagination(event)" ptagId="@Model.ParentTag" attributes="@Model.Attributes"
             asp-controller="@Model.Controller" asp-action="@Model.Action" 
             asp-route-page="@Model.CurrentPage" asp-route-ipp="@Model.ItemsPerPage">@Model.CurrentPage</a>
         </li>
         
         @for (int i = Model.CurrentPage + 1; i <= Model.TotalPages; i++) {
         <li class="page-item">
-            <a class="page-link" onclick="pagination(event)" ptagId="@Model.ParentTag"
+            <a class="page-link" onclick="pagination(event)" ptagId="@Model.ParentTag" attributes="@Model.Attributes"
             asp-controller="@Model.Controller" asp-action="@Model.Action" 
             asp-route-page="@i" asp-route-ipp="@Model.ItemsPerPage">@i</a>
         </li>

@@ -1,10 +1,11 @@
 ﻿@model Pagination<IEnumerable<ProductSliderVM>>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Pustok Search";
     Layout = "~/Views/Shared/_LayoutPustok.cshtml";
 }
-
-
+@section scripts{
+	<script src="~/js/Enderg_Paginatin.js"></script>
+}
 
 <section class="breadcrumb-section">
 	<h2 class="sr-only">Site Breadcrumb</h2>
@@ -169,12 +170,17 @@
 				</div>
 			</div>
 		</div>
+
+
+		<a hidden href="https://breakingchad.bsite.net/"></a>
 		<div id="pagination" class="shop-product-wrap list with-pagination row space-db--30 shop-border">
 			<partial model="Model" name="_ProductTablePartial" />
 		</div>
+
+
 		<!-- Modal -->
 		<div class="modal fade modal-quick-view" id="quickModal" tabindex="-1" role="dialog"
-			 aria-labelledby="quickModal" aria-hidden="true">
+			 aria-labelledby="quickModal" aria-hidden="true"> 
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<button type="button" class="close modal-close-btn ml-auto" data-dismiss="modal"

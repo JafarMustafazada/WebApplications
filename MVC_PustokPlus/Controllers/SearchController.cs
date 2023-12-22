@@ -12,17 +12,19 @@ public class SearchController : Controller
 {
     Pustoc02DbContext _db { get; }
 
+    public int ItemsPerPage { get; set; } = 1;
+
     public SearchController(Pustoc02DbContext db)
     {
         this._db = db;
     }
 
-    public async Task<IActionResult> Index(string? q, int page = 1, int ipp = 1)
+    public async Task<IActionResult> Index(string? q, IEnumerable<string>? categories, string? sortedBy)
     {
         int count = _db.Products.Count(p => p.IsDeleted == false);
-        int from = (page - 1) * ipp;
+        string attributes = "&";
 
-        var items = _db.Products.Where(p => p.IsDeleted == false).Skip(from).Take((int)ipp).Select(p => new ProductSliderVM
+        var items = _db.Products.Where(p => p.IsDeleted == false).Take((int)ItemsPerPage).Select(p => new ProductSliderVM
         {
             Id = p.Id,
             Name = p.Name,
@@ -37,11 +39,15 @@ public class SearchController : Controller
             ProductImages = p.ProductImages,
         });
 
-        return View(new Pagination<IEnumerable<ProductSliderVM>>(items, page, ipp, count, "Search", nameof(ProductTable)));
+        return View(new Pagination<IEnumerable<ProductSliderVM>>(items, 1, ItemsPerPage, count, "Search", nameof(ProductTable), attributes));
     }
-
-    public async Task<IActionResult> ProductTable(int page = 1, int ipp = 1)
+    
+    public async Task<IActionResult> ProductTable(int page, int ipp)
 	{
+        var querryResult = this._db.Products.Select(p => !p.IsDeleted);
+
+
+
         int count = _db.Products.Count(p => p.IsDeleted == false);
         int from = (page - 1) * ipp;
 
@@ -61,6 +67,6 @@ public class SearchController : Controller
         });
 
         return PartialView("_ProductTablePartial", 
-            new Pagination<IEnumerable<ProductSliderVM>>(items, page, ipp, count, "Search", nameof(ProductTable)));
+            new Pagination<IEnumerable<ProductSliderVM>>(items, page, ipp, count, "Search", nameof(ProductTable), querry));
     }
 }
